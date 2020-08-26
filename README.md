@@ -1,0 +1,2 @@
+# ScenicSpot
+miniprogram
