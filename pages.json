@@ -1,0 +1,183 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "首页",//设置页面标题文字
+				"onReachBottomDistance":100
+			}
+		}
+        ,{
+            "path" : "pages/store/store",
+            "style" : {
+				"navigationBarTitleText": "门店"
+			}
+        }
+        ,{
+            "path" : "pages/service/service",
+            "style" : {
+				"navigationBarTitleText": "服务协议"
+			}
+        }
+        ,{
+            "path" : "pages/integralShop/integralShop",
+            "style" : {
+				"navigationBarTitleText": "积分商场"
+			}
+        }
+        ,{
+            "path" : "pages/onlineDetail/onlineDetail",
+            "style" : {
+				"navigationBarTitleText": "详情"
+			}
+        }
+        ,{
+            "path" : "pages/setMealDetail/setMealDetail",
+            "style" : {
+				"navigationBarTitleText": "套餐详情"
+			}
+        }
+        ,{
+            "path" : "pages/onlineOrder/onlineOrder",
+            "style" : {
+				"navigationBarTitleText": "提交订单"
+			}
+        }
+        ,{
+            "path" : "pages/deposit/deposit",
+            "style" : {
+				"navigationBarTitleText": "押金",
+				"navigationBarBackgroundColor": "#13C3F6",
+				"navigationBarTextStyle": "white"
+			}
+        }
+        ,{
+            "path" : "pages/paySuccess/paySuccess",
+            "style" : {
+				"navigationBarTitleText": "支付成功",
+				"navigationBarBackgroundColor": "#13C3F6",
+				"navigationBarTextStyle": "white"
+			}
+        }
+        ,{
+            "path" : "pages/integralDetail/integralDetail",
+            "style" : {
+				"navigationBarTitleText": "详情"
+			}
+        }
+        ,{
+            "path" : "pages/address/address",
+            "style" : {
+				"navigationBarTitleText": "收货地址"
+			}
+        }
+        ,{
+            "path" : "pages/addAddress/addAddress",
+            "style" : {
+				"navigationBarTitleText": "新增地址"
+			}
+        }
+        ,{
+            "path" : "pages/user/user",
+            "style" : {
+				"navigationBarBackgroundColor": "#13C3F6",
+				"navigationBarTextStyle": "white"
+			}
+        }
+        ,{
+            "path" : "pages/user-integral/user-integral",
+            "style" : {
+				"navigationBarTitleText": "我的积分",
+				"navigationBarBackgroundColor": "#13C3F6",
+				"navigationBarTextStyle": "white"
+			}
+        }
+        ,{
+            "path" : "pages/user-deposit/user-deposit",
+            "style" : {
+				"navigationBarTitleText": "我的押金",
+				"navigationBarBackgroundColor": "#13C3F6",
+				"navigationBarTextStyle": "white"
+			}
+        }
+        ,{
+            "path" : "pages/user-coupon/user-coupon",
+            "style" : {
+				"navigationBarTitleText": "我的优惠券"
+			}
+        }
+        ,{
+            "path" : "pages/user-onlineOrder/user-onlineOrder",
+            "style" : {
+				"navigationBarTitleText": "线路订单"
+			}
+        }
+        ,{
+            "path" : "pages/user-integralOrder/user-integralOrder",
+            "style" : {
+				"navigationBarTitleText": "积分订单"
+			}
+        }
+        ,{
+            "path" : "pages/orderDetail/orderDetail",
+            "style" : {
+				"navigationBarTitleText": "订单详情"
+			}
+        }
+        ,{
+            "path" : "pages/login/login",
+            "style" : {
+				"navigationBarBackgroundColor": "#13C3F6",
+				"navigationBarTextStyle": "white"
+			}
+        }
+        ,{
+            "path" : "pages/realName/realName",
+            "style" : {
+				"navigationBarTitleText": "实名认证"
+			}
+        }
+        ,{
+            "path" : "pages/driver/driver",
+            "style" : {
+				"navigationBarTitleText": "司机入口",
+				"navigationBarBackgroundColor": "#13C3F6",
+				"navigationBarTextStyle": "white"
+			}
+        }
+        ,{
+            "path" : "pages/onlineOrder-detail/onlineOrder-detail",
+            "style" : {
+				"navigationBarTitleText": "订单详情"
+			}
+        }
+        ,{
+            "path" : "pages/driverProfit/driverProfit",
+            "style" : {
+				"navigationBarTitleText": "收益流水"
+			}
+        }
+        ,{
+            "path" : "pages/entrance/entrance",
+            "style" : {
+				"navigationBarTitleText": "入口",
+				"navigationBarBackgroundColor": "#13C3F6",
+				"navigationBarTextStyle": "white"
+			}
+        }
+    ],
+	"globalStyle": {
+		//"navigationStyle":"custom",
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "",
+		"navigationBarBackgroundColor": "#FFFFFF"
+	},
+	"condition": { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": [{
+			"name": "", //模式名称
+			"path": "", //启动页面，必选
+			"query": "" //启动参数，在页面的onLoad函数里面得到
+		}]
+	}
+}
