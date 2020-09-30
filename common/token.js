@@ -265,19 +265,65 @@ class Token {
         
     }
     
-    getMerchantToken(callback,postData) { 
-        if((postData&&postData.refreshToken)||!uni.getStorageSync('merchant_token')){
-            uni.removeStorageSync('merchant_token');
-            uni.removeStorageSync('merchant_info');
-            uni.redirectTo({
-              url: '/pages/login/login'
-            });
+    getAreaToken(callback,postData) { 
+        if((postData&&postData.refreshToken)||!uni.getStorageSync('area_token')){
+            uni.removeStorageSync('area_token');
+            uni.removeStorageSync('area_info');
+			$Utils.showToast('登录已失效，请重新登录','none')
+			setTimeout(function() {
+				uni.redirectTo({
+				  url: '/pages/user/user'
+				});
+			}, 1000);
         }else{
-            return uni.getStorageSync('merchant_token');
+            return uni.getStorageSync('area_token');
         }
     }
+	
+	getDriverToken(callback,postData) {
+	    if((postData&&postData.refreshToken)||!uni.getStorageSync('driver_token')){
+	        uni.removeStorageSync('driver_token');
+	        uni.removeStorageSync('driver_info');
+			$Utils.showToast('登录已失效，请重新登录','none')
+			setTimeout(function() {
+				uni.redirectTo({
+				  url: '/pages/user/user'
+				});
+			}, 1000);
+	    }else{
+	        return uni.getStorageSync('driver_token');
+	    }
+	}
    
-
+	getShopToken(callback,postData) {
+	    if((postData&&postData.refreshToken)||!uni.getStorageSync('shop_token')){
+	        uni.removeStorageSync('shop_token');
+	        uni.removeStorageSync('shop_info');
+			$Utils.showToast('登录已失效，请重新登录','none')
+			setTimeout(function() {
+				uni.redirectTo({
+				  url: '/pages/user/user'
+				});
+			}, 1000);
+	    }else{
+	        return uni.getStorageSync('shop_token');
+	    }
+	}
+	
+	getAgentToken(callback,postData) {
+	    if((postData&&postData.refreshToken)||!uni.getStorageSync('agent_token')){
+	        uni.removeStorageSync('agent_token');
+	        uni.removeStorageSync('agent_info');
+			$Utils.showToast('登录已失效，请重新登录','none')
+			setTimeout(function() {
+				uni.redirectTo({
+				  url: '/pages/user/user'
+				});
+			}, 1000);
+	    }else{
+	        return uni.getStorageSync('agent_token');
+	    }
+	}
 
     getUserInfo(params,callback){
         var self = this;

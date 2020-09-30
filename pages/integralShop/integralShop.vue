@@ -3,14 +3,16 @@
 		
 		<view class="px-2 pb-2 flex1">
 			<view class="w345 radius10 overflow-h p-r bg-white mt-2"
-			@click="Router.navigateTo({route:{path:'/pages/integralDetail/integralDetail'}})">
-				<image src="../../static/images/integral-img.png" class="img"></image>
-				<view class="kcSign">库存 230</view>
+			:data-id = "item.id"
+			 v-for="(item,index) in mainData" :key="index"
+			@click="Router.navigateTo({route:{path:'/pages/integralDetail/integralDetail?id='+$event.currentTarget.dataset.id}})">
+				<image :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" class="img"></image>
+				<view class="kcSign">库存 {{item.stock}}</view>
 				<view class="p-2">
-					<view class="avoidOverflow2">服饰instax得力拍相机 一次成像相机 mini9 系列</view>
+					<view class="avoidOverflow2">{{item.title?item.title:''}}</view>
 					<view class="font-20 colorR pt-2">
-						<text class="font-30 font-w">266</text>积分
-						<text class="font-30 font-w">+9.9</text>元
+						<text class="font-30 font-w">{{item.score?item.score:''}}</text>积分
+						<text class="font-30 font-w">+{{item.price?item.price:''}}</text>元
 					</view>
 				</view>
 			</view>
@@ -43,10 +45,57 @@
 	export default {
 		data() {
 			return {
-				Router:this.$Router
+				Router:this.$Router,
+				mainData:[]
 			}
 		},
+		
+		onLoad() {
+			const self = this;
+			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
+			self.$Utils.loadAll(['getMainData'], self);
+		},
+		
+		onReachBottom() {
+			console.log('onReachBottom')
+			const self = this;
+			if (!self.isLoadAll && uni.getStorageSync('loadAllArray')) {
+				self.paginate.currentPage++;
+				self.getMainData()
+			};
+		},
+		
 		methods: {
+			
+			getMainData(isNew) {
+				var self = this;
+				if (isNew) {
+					self.mainData = [];
+					self.paginate = {
+						count: 0,
+						currentPage: 1,
+						pagesize: 10,
+						is_page: true,
+					}
+				};
+				var postData = {};
+				postData.paginate = self.$Utils.cloneForm(self.paginate);
+				postData.noLoading = true;
+				postData.searchItem = {
+					thirdapp_id: 2,
+					type:2
+				};
+				postData.order = {
+					listorder: 'desc'
+				};
+				var callback = function(res) {
+					if (res.info.data.length > 0) {
+						self.mainData.push.apply(self.mainData, res.info.data);
+					};
+					self.$Utils.finishFunc('getMainData');
+				};
+				self.$apis.productGet(postData, callback);
+			},
 			
 		}
 	}

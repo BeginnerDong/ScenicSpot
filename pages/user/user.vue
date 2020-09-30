@@ -3,11 +3,14 @@
 		
 		<image src="../../static/images/my-img.png" mode="widthFix" class="p-fX top-0"></image>
 		<view class="pl-3 pt-5">
-			<image src="../../static/images/tehdriver-img.png" class="wh150 radius-5 mt-5 ml-2 shadow"></image>
+			<image :src="userData.headImgUrl?userData.headImgUrl:''" class="wh150 radius-5 mt-5 ml-2 shadow"></image>
 			<view class="flex1 pl-2 line-h name">
-				<view class="flex font-32">
-					<view class="font-w">哆啦A梦</view>
-					<view class="vipSign ml-1">会员</view>
+				<view class="flex font-32"  v-if="userData&&userData.nickname!=''" style="width: 21.5%;justify-content: center;">
+					<view class="font-w">{{userData.nickname?userData.nickname:''}}</view>
+					<view class="vipSign ml-1" v-if="userData.info&&userData.info.level==1">会员</view>
+				</view>
+				<view v-else>
+					<button open-type="getUserInfo" @getuserinfo="Utils.stopMultiClick(submit)" style="font-size: 15px;background: #13C3F6;height: 50rpx;line-height: 50rpx;color: #fff;padding: 0 20rpx;">点击显示微信昵称头像</button>
 				</view>
 				<view class="flex font-24"
 				@click="Router.navigateTo({route:{path:'/pages/realName/realName'}})">
@@ -30,11 +33,11 @@
 					<image src="../../static/images/my-icon5.png" class="wh50 mb-2"></image>
 					<view>积分订单</view>
 				</view>
-				<view class="pb-4 flex4 w-25"
+				<!-- <view class="pb-4 flex4 w-25"
 				@click="Router.navigateTo({route:{path:'/pages/user-deposit/user-deposit'}})">
 					<image src="../../static/images/my-icon6.png" class="yjIcon mb-2"></image>
 					<view>我的押金</view>
-				</view>
+				</view> -->
 				<view class="pb-4 flex4 w-25"
 				@click="Router.navigateTo({route:{path:'/pages/user-integral/user-integral'}})">
 					<image src="../../static/images/my-icon2.png" class="wh50 mb-2"></image>
@@ -57,21 +60,22 @@
 			<view class="px-3 font-30 font-w py-4">第三方登录</view>
 			<view class="font-24 line-h color8 flex flex-wrap">
 				<view class="pb-4 flex4 w-25"
-				@click="Router.navigateTo({route:{path:'/pages/driver/driver'}})">
+				@click="login(2)">
 					<image src="../../static/images/my-icon10.png" class="wh50 mb-2"></image>
 					<view>司机入口</view>
 				</view>
 				<view class="pb-4 flex4 w-25"
-				@click="Router.navigateTo({route:{path:'/pages/login/login'}})">
+				@click="login(3)">
 					<image src="../../static/images/my-icon8.png" class="wh50 mb-2"></image>
 					<view>景区入口</view>
 				</view>
 				<view class="pb-4 flex4 w-25"
-				@click="Router.navigateTo({route:{path:'/pages/entrance/entrance'}})">
+				@click="login(1)">
 					<image src="../../static/images/my-icon9.png" class="wh50 mb-2"></image>
 					<view>商户入口</view>
 				</view>
-				<view class="pb-4 flex4 w-25">
+				<view class="pb-4 flex4 w-25"
+				@click="login(4)">
 					<image src="../../static/images/my-icon7.png" class="wh50 mb-2"></image>
 					<view>代理入口</view>
 				</view>
@@ -104,11 +108,72 @@
 	export default {
 		data() {
 			return {
-				Router:this.$Router
+				Router:this.$Router,
+				userData:{}
 			}
+		},
+		onLoad() {
+			const self = this;
+			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
+			self.$Utils.loadAll(['getUserData'], self);
 		},
 		methods: {
 			
+			submit() {
+				const self = this;
+				uni.setStorageSync('canClick', false);	
+				const callback = (user, res) => {
+					console.log(res)
+					self.getUserData(user);
+				};
+				self.$Utils.getAuthSetting(callback);
+			},
+			
+			
+			getUserData(user) {
+				const self = this;
+				const postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				if(user){
+					postData.refreshToken = true;
+				};
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.userData = res.info.data[0];
+					};
+					self.$Utils.finishFunc('getUserData');
+				};
+				self.$apis.userGet(postData, callback);
+			},
+			
+			login(type){
+				const self = this;
+				if(type==1){
+					if(uni.getStorageSync('shop_token')){
+						self.Router.navigateTo({route:{path:'/pages/entrance/entrance?type=1'}})
+					}else{
+						self.Router.navigateTo({route:{path:'/pages/login/login?type=1'}})
+					}
+				}else if(type==2){
+					if(uni.getStorageSync('driver_token')){
+						self.Router.navigateTo({route:{path:'/pages/driver/driver'}})
+					}else{
+						self.Router.navigateTo({route:{path:'/pages/login/login?type=2'}})
+					}
+				}else if(type==3){
+					if(uni.getStorageSync('area_token')){
+						self.Router.navigateTo({route:{path:'/pages/entrance/entrance?type=3'}})
+					}else{
+						self.Router.navigateTo({route:{path:'/pages/login/login?type=3'}})
+					}
+				}else if(type==4){
+					if(uni.getStorageSync('agent_token')){
+						self.Router.navigateTo({route:{path:'/pages/entrance/entrance?type=4'}})
+					}else{
+						self.Router.navigateTo({route:{path:'/pages/login/login?type=4'}})
+					}
+				}
+			}
 		}
 	}
 </script>

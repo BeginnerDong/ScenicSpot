@@ -4,33 +4,33 @@
 		<!-- banner -->
 		<swiper class="swiper-box" indicator-dots="indicatorDots" autoplay="autoplay" interval="3000" indicator-active-color="#fff">
 			<block>
-				<swiper-item class="swiper-item" >
-					<image src="../../static/images/detailsonline-img.png" mode="widthFix" />
+				<swiper-item class="swiper-item" v-for="(item,index) in mainData.bannerImg" :key="index">
+					<image :src="item.url" mode="widthFix" />
 				</swiper-item>
 			</block>
 		</swiper>
 		
 		<!-- 详情信息 -->
 		<view class="px-2 py-3">
-			<view class="font-32">西安秦始皇兵马俑博物馆+华清池+骊山+一日游【冰蛋语音讲解/长恨歌】</view>
-			<view class="font-24 color8 flex-1 pt-2 pb-3">在西安让您感受千年古都的文化气息</view>
+			<view class="font-32">{{mainData.title}}</view>
+			<view class="font-24 color8 flex-1 pt-2 pb-3">{{mainData.description}}</view>
 			<view class="flex1">
 				<view>
-					<text class="price1 font-34 font-w">2662</text>
-					<text class="font-20 color9 pl-2">已售 235</text>
+					<text class="price1 font-34 font-w">{{chooseSku.price?chooseSku.price:'暂无'}}</text>
+					<text class="font-20 color9 pl-2">已售 {{mainData.sale_count?mainData.sale_count:0}}</text>
 				</view>
-				<view class="font-24 colorM">可得积分 26</view>
+				<view class="font-24 colorM">可得积分 {{chooseSku.score?chooseSku.score:'暂无'}}</view>
 			</view>
 		</view>
 		<view class="f5Bj-H20"></view>
 		
 		<!-- 拼团 -->
-		<view class="px-2 py-3">
+		<view class="px-2 py-3" v-if="mainData.orders&&mainData.orders.length>0">
 			<view class="font-22 color8">这些人刚刚购买成功，可参与拼团</view>
 			<view class="flex1 pt-3">
-				<image src="../../static/images/detailsonline-img1.png" class="wh80"></image>
-				<view class="font-24 pl-2 flex-1">月亮的儿童</view>
-				<view class="font-26">3人</view>
+				<image :src="mainData.orders&&mainData.orders[0]&&mainData.orders[0].user?mainData.orders[0].user.headImgUrl:''" class="wh80"></image>
+				<view class="font-24 pl-2 flex-1">{{mainData.orders&&mainData.orders[0]&&mainData.orders[0].user?mainData.orders[0].user.nickname:''}}</view>
+				<view class="font-26">{{mainData.orders&&mainData.orders[0]?mainData.orders[0].count:''}}人</view>
 			</view>
 		</view>
 		<view class="f5Bj-H20"></view>
@@ -38,26 +38,8 @@
 		<!-- 旅游行程安排 -->
 		<view class="px-2 py-3">
 			<view class="font-34 font-w">旅游行程安排</view>
-			<view class="flex py-2 mb-2">
-				<view class="flex pr-5">
-					<image src="../../static/images/detailsonline-icon1.png" class="xcIcon"></image>
-					<view class="font-24 pl-2">行程安排 <text class="font-32 font-w pl-1"> 2</text></view>
-				</view>
-				<view class="flex pl-5">
-					<image src="../../static/images/detailsonline-icon.png" class="xcIcon"></image>
-					<view class="font-24 pl-2">观光点数 <text class="font-32 font-w pl-1"> 8</text></view>
-				</view>
-			</view>
-			<view class="online d-flex a-start j-sb line-h pl-3 p-r pb-2 mt-1" v-for="v in 2" :key="v">
-				<view class="time colorM font-32 font-w flex-1">10点</view>
-				<view class="flex flex-wrap onlineCon">
-					<view class="flex pb-2" v-for="v in 5" :key="v">
-						<view>静安寺</view>
-						<image src="../../static/images/detailsonline-icon2.png" class="zx-icon mx-2"></image>
-					</view>
-					<view class="flex pb-2">
-						<view>上海博物馆</view>
-					</view> 
+			<view class="py-2">
+				<view class="content ql-editor" style="padding:0" v-html="mainData.content">
 				</view>
 			</view>
 		</view>
@@ -67,51 +49,63 @@
 		<view class="font-24 px-2">
 			<view>
 				<view class="flex1 py-4">
-					<view class="font-34 font-w">包车套餐</view>
-					<view class="flex color9">
+					<view class="font-34 font-w">整车套餐</view>
+					<view class="flex color9" @click="Router.navigateTo({route:{path:'/pages/setMealDetail/setMealDetail?id='+chooseSku.id+'&behavior=1'}})">
 						<view>查看详情</view>
 						<image src="../../static/images/icon.png" class="R-icon ml-1"></image>
 					</view>
 				</view>
 				<view class="pt-1 bB-e1 flex flex-wrap tcBox">
-					<view class="tc flex0 p-r b-e1 radius10 mb-4 on">
-						<view class="font-44 font-w pt-2 price1">88</view>
-						<view class="tcSign">套餐A</view>
+					<view class="tc flex0 p-r b-e1 radius10 mb-4"  v-for="(item,index) in mainData.carcharter" :key="index" v-if="mainData.carcharter&&mainData.carcharter.length>0" @click="choose(index,'carcharter')" :class="item.id==chooseSku.id?'on':''">
+						<view class="font-44 font-w pt-2 price1">{{item.price}}</view>
+						<view class="tcSign avoidOverflow">{{item.title}}</view>
 					</view>
+				</view>
+				<view style="width: 100%;text-align: center;margin: 50rpx 0;" v-if="mainData.carcharter&&mainData.carcharter.length==0">
+					暂无整车套餐~
 				</view>
 			</view>
 			<view>
 				<view class="flex1 py-4">
 					<view class="font-34 font-w">拼车套餐</view>
-					<view class="flex color9">
+					<view class="flex color9" @click="Router.navigateTo({route:{path:'/pages/setMealDetail/setMealDetail?id='+chooseSku.id+'&behavior=2'}})">
 						<view>查看详情</view>
 						<image src="../../static/images/icon.png" class="R-icon ml-1"></image>
 					</view>
 				</view>
-				<view class="pt-1 flex flex-wrap tcBox">
-					<view class="tc flex0 p-r b-e1 radius10 mb-4">
-						<view class="font-44 font-w pt-2 price1">88</view>
-						<view class="tcSign">套餐A</view>
+				<view class="pt-1 bB-e1 flex flex-wrap tcBox" >
+					<view class="tc flex0 p-r b-e1 radius10 mb-4" v-for="(item,index) in mainData.carpool" :key="index"  v-if="mainData.carpool&&mainData.carpool.length>0" :class="item.id==chooseSku.id?'on':''" @click="choose(index,'carpool')">
+						<view class="font-44 font-w pt-2 price1">{{item.price}}</view>
+						<view class="tcSign avoidOverflow">{{item.title}}</view>
 					</view>
+				</view>
+				<view style="width: 100%;text-align: center;margin: 50rpx 0;" v-if="mainData.carpool&&mainData.carpool.length==0">
+					暂无拼车套餐~
 				</view>
 			</view>
 		</view>
 		<view class="f5Bj-H20"></view>
 		
 		<!-- 服务协议 -->
-		<view class="font-24 fw">
-			点击购买表示已经同意 
+		<view class="font-24 fw d-flex j-center">
+			点击支付表示已经同意 
 			<text class="colorR"
 			@click="Router.navigateTo({route:{path:'/pages/service/service'}})">《服务协议》</text>
+			<image @click="select()" style="width: 40rpx;height: 40rpx;margin-left: 20rpx;" :src="isAgree?'../../static/images/address-icon3.png':'../../static/images/address-icon2.png'"></image>
 		</view>
 		
 		
 		<!-- 按钮 -->
+		<!-- <view class="flex1 p-2 bT-f5 p-fX bottom-0 bg-white">
+			<view class="btn80 Mgb"
+			@click="submit(2)">购买拼车</view>
+			<view class="btn80 Mgb"
+			@click="submit(1)">购买整车</view>
+		</view> -->
+		
 		<view class="flex1 p-2 bT-f5 p-fX bottom-0 bg-white">
 			<view class="btn80 Mgb"
-			@click="Router.navigateTo({route:{path:'/pages/setMealDetail/setMealDetail'}})">购买拼车</view>
-			<view class="btn80 Mgb"
-			@click="Router.navigateTo({route:{path:'/pages/setMealDetail/setMealDetail'}})">购买包车</view>
+			@click="submit">订单支付</view>
 		</view>
 		
 		
@@ -122,10 +116,129 @@
 	export default {
 		data() {
 			return {
-				Router:this.$Router
+				Router:this.$Router,
+				mainData:{},
+				chooseSku:{},
+				orderList:[],
+				isAgree:false
 			}
 		},
+		
+		onLoad(options) {
+			const self = this;
+			self.id = options.id;
+			
+			self.$Utils.loadAll(['getMainData'], self);
+		},
+		
+		onShow() {
+			const self = this;
+			self.getUserInfoData();
+			self.orderList = [];
+			if(uni.getStorageSync('chooseSku')){
+				self.chooseSku = uni.getStorageSync('chooseSku')
+			}
+		},
+		
 		methods: {
+			
+			select(){
+				const self = this;
+				self.isAgree = !self.isAgree
+			},
+			
+			getUserInfoData() {
+				const self = this;
+				const postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.noLoading = true;
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.userInfoData = res.info.data[0]
+					}
+					self.$Utils.finishFunc('getUserInfoData');
+				};
+				self.$apis.userInfoGet(postData, callback);
+			},
+			
+			submit(behavior){
+				const self = this;
+				/* if(self.userInfoData.deposit==0){
+					uni.showModal({
+						title:'提示',
+						content:'您还未缴纳押金，是否立即缴纳',
+						success(res) {
+							if(res.confirm){
+								self.Router.navigateTo({route:{path:'/pages/deposit/deposit'}})
+							}
+						}
+					})
+					return
+				}; */
+				if(!self.isAgree){
+					uni.showModal({
+						title:'提示',
+						content:'请选择同意服务协议',
+						showCancel:false,
+						confirmText:'我知道了'
+					})
+					return
+				};
+				if(JSON.stringify(self.chooseSku)!='{}'){
+					self.orderList.push(
+						{sku_id:self.chooseSku.id,count:1,product:self.mainData,sku:self.chooseSku},
+					);
+					uni.setStorageSync('payPro', self.orderList);
+					self.Router.navigateTo({route:{path:'/pages/onlineOrder/onlineOrder'}})
+				}else{
+					
+					self.Router.navigateTo({route:{path:'/pages/setMealDetail/setMealDetail?behavior='+behavior}})
+				}
+			},
+			
+			choose(index,type){
+				const self = this;
+				self.chooseSku = self.mainData[type][index]
+			},
+			
+			
+			
+			getMainData() {
+				var self = this;
+				var postData = {};
+				postData.searchItem = {
+					thirdapp_id: 2,
+					id:self.id
+				};
+				postData.getAfter = {
+					sku:{
+						tableName:'Sku',
+						middleKey:'product_no',
+						key:'product_no',
+						searchItem:{
+							status:1
+						},
+						condition:'='
+					}
+				};
+				var callback = function(res) {
+					if (res.info.data.length > 0) {
+						self.mainData  = res.info.data[0]
+						const regex = new RegExp('<img', 'gi');
+						self.mainData.content = self.mainData.content.replace(regex, `<img style="max-width: 100%;height:auto"`);
+						if(self.mainData.carcharter.length>0){
+							self.chooseSku = self.mainData.carcharter[0]
+						}else if(self.mainData.carpool.length>0){
+							self.chooseSku = self.mainData.carpool[0]
+						};
+						uni.setStorageSync('productNo', self.mainData.product_no);
+						uni.setStorageSync('carcharterData',self.mainData.carcharter)
+						uni.setStorageSync('carpoolData',self.mainData.carpool)
+					};
+					self.$Utils.finishFunc('getMainData');
+				};
+				self.$apis.productGet(postData, callback);
+			},
 			
 		}
 	}
@@ -149,5 +262,5 @@
 .on .price1{color: #fff;}
 
 .fw{padding: 80rpx 0 140rpx;text-align: center;}
-.btn80{color: #fff;border-radius: 10rpx;width: 340rpx;}
+.btn80{color: #fff;border-radius: 10rpx;width: 100%;}
 </style>

@@ -42,6 +42,11 @@
             "style" : {
 				"navigationBarTitleText": "提交订单"
 			}
+        },{
+            "path" : "pages/integralOrder/integralOrder",
+            "style" : {
+				"navigationBarTitleText": "提交订单"
+			}
         }
         ,{
             "path" : "pages/deposit/deposit",
