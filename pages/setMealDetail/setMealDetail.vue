@@ -10,7 +10,7 @@
 			</view>
 			<view class="pb-4 flex1">
 				
-				<textarea contenteditable="true" auto-height="true" style="background-color: #f5f5f5;padding: 10rpx;" disabled  v-model="item.description"></textarea>
+				<textarea maxlength="9999" contenteditable="true" auto-height="true" style="background-color: #f5f5f5;padding: 10rpx;" disabled  v-model="item.description"></textarea>
 			</view>
 			<view class="text-right py-4 bT-f5">
 				总计：<text class="price">{{item.price}}</text>

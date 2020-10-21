@@ -72,12 +72,12 @@
 				<view class="pb-4 flex4 w-25"
 				@click="login(1)">
 					<image src="../../static/images/my-icon9.png" class="wh50 mb-2"></image>
-					<view>商户入口</view>
+					<view>加盟租赁</view>
 				</view>
 				<view class="pb-4 flex4 w-25"
 				@click="login(4)">
 					<image src="../../static/images/my-icon7.png" class="wh50 mb-2"></image>
-					<view>代理入口</view>
+					<view>投资理财</view>
 				</view>
 			</view>
 		</view>

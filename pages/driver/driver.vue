@@ -269,7 +269,7 @@
 					postData.saveAfter[0].data.drive_status=0
 				}
 				const callback = (res) => {
-					if (res.info.data.length > 0) {
+					if (res.solely_code == 100000) {
 						self.$Utils.showToast('操作成功', 'none');
 						setTimeout(function() {
 							self.getMainData(true)

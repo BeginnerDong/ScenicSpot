@@ -6,7 +6,7 @@
 				<image src="../../static/images/home-icon.png" class="dw-icon mr-1"></image>
 				<view>{{district}}</view>
 			</view>
-			<view class="flex" @click="Router.navigateTo({route:{path:'/pages/store/store?id='+shopData[0].id}})">
+			<view class="flex">
 				<view>{{shopData[0]&&shopData[0].name?shopData[0].name:''}}</view>
 				<image src="../../static/images/home-icon1.png" class="sj-icon ml-1"></image>
 			</view>
