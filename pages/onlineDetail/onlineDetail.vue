@@ -35,16 +35,6 @@
 		</view>
 		<view class="f5Bj-H20"></view>
 		
-		<!-- 旅游行程安排 -->
-		<view class="px-2 py-3">
-			<view class="font-34 font-w">旅游行程安排</view>
-			<view class="py-2">
-				<view class="content ql-editor" style="padding:0" v-html="mainData.content">
-				</view>
-			</view>
-		</view>
-		<view class="f5Bj-H20"></view>
-		
 		<!-- 套餐 -->
 		<view class="font-24 px-2">
 			<view>
@@ -93,6 +83,18 @@
 			@click="Router.navigateTo({route:{path:'/pages/service/service'}})">《服务协议》</text>
 			<image @click="select()" style="width: 40rpx;height: 40rpx;margin-left: 20rpx;" :src="isAgree?'../../static/images/address-icon3.png':'../../static/images/address-icon2.png'"></image>
 		</view>
+		<view class="f5Bj-H20"></view>
+		<!-- 旅游行程安排 -->
+		<view class="px-2 py-3">
+			<view class="font-34 font-w">旅游行程安排</view>
+			<view class="py-2">
+				<view class="content ql-editor" style="padding:0" v-html="mainData.content">
+				</view>
+			</view>
+		</view>
+		
+		
+		
 		
 		
 		<!-- 按钮 -->
@@ -261,6 +263,6 @@
 .on .tcSign{border: 1px solid #13C3F6;color: #13C3F6;}
 .on .price1{color: #fff;}
 
-.fw{padding: 80rpx 0 140rpx;text-align: center;}
+.fw{padding: 30rpx 0 30rpx;text-align: center;}
 .btn80{color: #fff;border-radius: 10rpx;width: 100%;}
 </style>

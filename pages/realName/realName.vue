@@ -90,6 +90,18 @@
 				postData.searchItem = {
 					user_no:uni.getStorageSync('user_info').user_no
 				};
+				postData.saveAfter = [
+					{
+						tableName: 'UserInfo',
+						FuncName: 'update',
+						data: {
+							is_read:1
+						},
+						searchItem:{
+							user_no:uni.getStorageSync('user_info').user_no
+						}
+					}
+				];	
 				const callback = (res) => {
 					if (res.solely_code==100000) {
 						uni.setStorageSync('canClick', true);

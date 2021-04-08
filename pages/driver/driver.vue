@@ -139,7 +139,8 @@
 				searchItem:{
 					pay_status:1,
 					user_type:0,
-					discount:1
+					discount:1,
+					order_step:0
 				},
 				mainData:[]
 			}
@@ -299,6 +300,7 @@
 								'count',
 								{
 									status: 1,
+									order_step:0
 									//user_no:uni.getStorageSync('driver_info').user_no
 								}
 							],
@@ -308,6 +310,7 @@
 								{
 									status: 1,
 									//user_no:uni.getStorageSync('driver_info').user_no,
+									order_step:0,
 									create_time:['between',[dayStart,nowTime]]
 								}
 							],

@@ -54,7 +54,7 @@
 				const postData = {};
 				postData.tokenFuncName = 'getProjectToken';
 				postData.data = {
-					is_read:1
+					status:1
 				};
 				postData.searchItem = {
 					user_no:uni.getStorageSync('user_info').user_no

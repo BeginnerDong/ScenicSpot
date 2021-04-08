@@ -10,15 +10,17 @@
 		<view v-for="(item,index) in mainData" :key="index">
 			<view class="bg-white radius10 mx-2 px-2 mb-2"
 			v-for="(c_item,c_index) in item.child"
-			:key="c_index" :data-id = "item.id"
-			@click="Router.navigateTo({route:{path:'/pages/onlineOrder-detail/onlineOrder-detail?id='+$event.currentTarget.dataset.id}})">
+			:key="c_index" >
 				<view class="font-24 color8 flex1 py-2">
 					<view>交易时间：{{item.create_time}}</view>
-					<view class="colorR" v-if="item.transport_status==0">待发车</view>
-					<view class="colorR" v-if="item.transport_status==1">进行中</view>
-					<view class="colorR" v-if="item.transport_status==2">已完成</view>
+					<view class="colorR" v-if="item.transport_status==0&&item.order_step==0">待发车</view>
+					<view class="colorR" v-if="item.transport_status==1&&item.order_step==0">进行中</view>
+					<view class="colorR" v-if="item.transport_status==2&&item.order_step==0">已完成</view>
+					<view class="colorR" v-if="item.order_step==1">申请退款中</view>
+					<view class="colorR" v-if="item.order_step==2">已退款</view>
 				</view>
-				<view class="flex1 mb-2">
+				<view class="flex1 mb-2" :data-id = "item.id"
+			@click="Router.navigateTo({route:{path:'/pages/onlineOrder-detail/onlineOrder-detail?id='+$event.currentTarget.dataset.id}})">
 					<image :src="c_item.orderItem&&c_item.orderItem[0]&&c_item.orderItem[0].snap_product&&c_item.orderItem[0].snap_product.product&&
 								c_item.orderItem[0].snap_product.product.mainImg&&c_item.orderItem[0].snap_product.product.mainImg[0]?c_item.orderItem[0].snap_product.product.mainImg[0].url:''" class="wh180 radius10"></image>
 					<view class="h180 flex5 pl-2 flex-1">
@@ -33,7 +35,12 @@
 					<view>套餐：</view>
 					<view>{{item.discount==1?'整车':'拼车'}}套餐（{{c_item.sku_title?c_item.sku_title:''}}） x{{c_item.count?c_item.count:''}}</view>
 				</view>
+				<view class="d-flex j-end pb-3">
+					<view class="btnOrder order2" v-if="item.order_step==0&&item.transport_status==0" @click="orderUpdate(index)">申请退款</view>
+					
+				</view>
 			</view>
+			
 		</view>
 		
 		
@@ -68,6 +75,31 @@
 			};
 		},
 		methods: {
+			
+			orderUpdate(index) {
+				const self = this;
+				uni.setStorageSync('canClick', false);
+				const postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.data = {
+					order_step:1
+				};
+				postData.searchItem = {
+					id:self.mainData[index].id,
+				};
+				const callback = (data) => {
+					uni.setStorageSync('canClick', true);
+					if (data && data.solely_code == 100000) {
+						self.$Utils.showToast('申请成功','none');
+						setTimeout(function() {
+							self.getMainData(true)
+						}, 1000);
+					} else {
+						self.$Utils.showToast(data.msg,'none')
+					}
+				};
+				self.$apis.orderUpdate(postData, callback);
+			 },
 			
 			changeLi(i){
 				const self = this;
@@ -130,4 +162,6 @@
 <style>page{background-color: #f5f5f5;}</style>
 <style scoped>
 .li{width: 33.33%;}
+.btnOrder{width: 130rpx;margin-left: 20rpx;border: 1px solid;text-align: center;border-radius: 10rpx;}
+.order2{border-color: #13C3F6;color: #13C3F6;}
 </style>
